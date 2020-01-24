@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import java.util.Date;
+
 import iesmila.net.yourpersonalapp.model.Fitxa;
 
 public class MainActivity extends AppCompatActivity {
@@ -68,24 +70,55 @@ public class MainActivity extends AppCompatActivity {
                 mostrarFitxaActual();
             }
         });
+
+
         //----------------------------------------------
         // Events del EditText
         edtNom.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
-             fitxaActual.setNom(s.toString());
+               String nom = edtNom.getText().toString();
+                Fitxa f = Fitxa.getFitxes().get(indexFitxaActual);
+               f.setNom(nom);
             }
         });
+        // --------------------------------------------------
+        // Events del RadioButton
+        rgoSexe.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Fitxa f = Fitxa.getFitxes().get(indexFitxaActual);
+                f.setEsHome(  checkedId == R.id.rdoHome );
+            }
+        });
+        //----------------------------------------------------
+        Fitxa f = Fitxa.getFitxes().get(indexFitxaActual);
+        dtpData.init(f.getData().getYear(), f.getData().getMonth()-1, f.getData().getDay(),
+                new DatePicker.OnDateChangedListener() {
+                    @Override
+                    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Fitxa f = Fitxa.getFitxes().get(indexFitxaActual);
+                        f.setData( new Date(year, monthOfYear+1, dayOfMonth ) );
+                    }
+                }
+        );
+
+
+
+        /*dtpData.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Fitxa f = Fitxa.getFitxes().get(indexFitxaActual);
+                f.setData( new Date(year, monthOfYear, dayOfMonth ) );
+            }
+        });*/
+
 
     }
 

@@ -17,13 +17,29 @@ android:columnCount="3"
         android:text="&gt;" android:layout_column="2"
         android:layout_margin="15dp" ></Button>
 
-<EditText android:id="@+id/edtNom"
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_columnSpan="3"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:hint="Introduir Nom"
-    android:inputType="textCapWords"
-    android:layout_columnSpan="3"
-    />
+    >
+
+    <EditText android:id="@+id/edtNom"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:hint="Introduir Nom"
+        android:inputType="textCapWords"
+        />
+    <ImageView
+        android:visibility="gone"
+        android:src="@drawable/error_validacio"
+        android:layout_gravity="center"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+
+</LinearLayout>
+
 <RadioGroup
     android:id="@+id/rgoSexe"
     android:orientation="horizontal"

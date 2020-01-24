@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:rowCount="4"
+android:columnCount="3"
+    >
+    <Button
+        android:id="@+id/btnPrev"
+        android:text="&lt;" android:layout_margin="15dp"></Button>
+    <Button
+        android:id="@+id/btnNext"
+        android:text="&gt;" android:layout_column="2"
+        android:layout_margin="15dp" ></Button>
+
+<EditText android:id="@+id/edtNom"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Introduir Nom"
+    android:inputType="textCapWords"
+    android:layout_columnSpan="3"
+    />
+<RadioGroup
+    android:id="@+id/rgoSexe"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal"
+    android:layout_columnSpan="3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RadioButton
+        android:id="@+id/rdoHome"
+        android:text="H"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"/>
+    <RadioButton
+        android:id="@+id/rdoDona"
+        android:text="D"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RadioGroup>
+<DatePicker
+    android:id="@+id/dtpData"
+    android:datePickerMode="spinner"
+    android:layout_columnSpan="3"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:calendarViewShown="false"
+    ></DatePicker>
+
+
+</GridLayout>

@@ -11,9 +11,11 @@ android:columnCount="3"
     >
     <Button
         android:id="@+id/btnPrev"
+        style="@style/boto"
         android:text="&lt;" android:layout_margin="15dp"></Button>
     <Button
         android:id="@+id/btnNext"
+        style="@style/boto"
         android:text="&gt;" android:layout_column="2"
         android:layout_margin="15dp" ></Button>
 
@@ -25,6 +27,8 @@ android:columnCount="3"
     >
 
     <EditText android:id="@+id/edtNom"
+        style="@style/textBase"
+        android:background="@drawable/edittext_background_selector"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"

@@ -1,5 +1,9 @@
 package iesmila.net.yourpersonalapp.model;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,11 +17,12 @@ public class Fitxa {
     private String nom;
     private boolean esHome;
     private Date data;
-    private int recursImatge; // ****
+    //private int recursImatge; // ****
+    private Bitmap imatge;
 
 
     private static List<Fitxa> fitxes;
-    public static List<Fitxa> getFitxes() {
+    public static List<Fitxa> getFitxes(Context c) {
         if( fitxes==null) {
             fitxes = new ArrayList<Fitxa>();
             fitxes.add(
@@ -25,14 +30,14 @@ public class Fitxa {
                             "Trump",
                             true,
                             new Date(1960, 10, 10),
-                            R.drawable.trump)
+                            R.drawable.trump, c)
             );
             fitxes.add(
                     new Fitxa(2,
                             "Maria",
                             false,
                             new Date(1970, 12, 04),
-                            R.drawable.maria
+                            R.drawable.maria, c
                     )
             );
         }
@@ -40,12 +45,14 @@ public class Fitxa {
     }
 
 
-    public Fitxa(int id, String nom, boolean esHome, Date data, int recursImatge) {
+    public Fitxa(int id, String nom, boolean esHome, Date data,  int recursImatge, Context c) {
         this.id = id;
         this.nom = nom;
         this.esHome = esHome;
         this.data = data;
-        this.recursImatge = recursImatge;
+        //this.recursImatge = recursImatge;
+        // Recuperem el bitmap que correspon a el recurs amb l'identificador especificat
+        this.imatge = BitmapFactory.decodeResource(c.getResources(), recursImatge);
     }
 
     public int getId() {
@@ -80,11 +87,11 @@ public class Fitxa {
         this.data = data;
     }
 
-    public int getRecursImatge() {
-        return recursImatge;
+    public Bitmap getImatge() {
+        return imatge;
     }
 
-    public void setRecursImatge(int recursImatge) {
-        this.recursImatge = recursImatge;
+    public void setImatge(Bitmap novaImatge) {
+        this.imatge = novaImatge;
     }
 }

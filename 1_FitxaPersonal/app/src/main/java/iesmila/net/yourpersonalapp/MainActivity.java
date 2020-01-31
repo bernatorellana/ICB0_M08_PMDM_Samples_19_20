@@ -1,5 +1,9 @@
 package iesmila.net.yourpersonalapp;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,6 +22,7 @@ import iesmila.net.yourpersonalapp.model.Fitxa;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String PARAM_ID = "id";
     // ------------------------------------
     //  Una variable per a cada control de l'Activity
     // ------------------------------------
@@ -38,6 +43,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //----------------------------------------
+        // Rebre els paràmetres de la llista de fitxes
+        int id = getIntent().getIntExtra(PARAM_ID,-1);
+        int idx=0;
+        for(Fitxa f: Fitxa.getFitxes(this)) {
+            if(f.getId()==id) {
+                break;
+            }
+            idx++;
+        }
+        indexFitxaActual = idx;
+
 
         //---------------------------------------
         edtNom = findViewById(R.id.edtNom);
@@ -51,14 +68,14 @@ public class MainActivity extends AppCompatActivity {
         //---------------------------------------
         // Prenem la primera fitxa de la llista
         //fitxaActual = Fitxa.getFitxes().get(1);
-        indexFitxaActual = 0;
+
         mostrarFitxaActual();
         //----------------------------------------
         // Programar els botons
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                indexFitxaActual =  (indexFitxaActual+1)%Fitxa.getFitxes().size();
+                indexFitxaActual =  (indexFitxaActual+1)%Fitxa.getFitxes(MainActivity.this).size();
                 mostrarFitxaActual();
             }
         });
@@ -66,11 +83,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 indexFitxaActual--;
-                if(indexFitxaActual<0) indexFitxaActual = Fitxa.getFitxes().size()-1;
+                if(indexFitxaActual<0) indexFitxaActual = Fitxa.getFitxes(MainActivity.this).size()-1;
                 mostrarFitxaActual();
             }
         });
 
+        //-------------------------------------------
+        // Event de l'ImageView
+        imgFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
 
         //----------------------------------------------
         // Events del EditText
@@ -84,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                String nom = edtNom.getText().toString();
-                Fitxa f = Fitxa.getFitxes().get(indexFitxaActual);
+                Fitxa f = Fitxa.getFitxes(MainActivity.this).get(indexFitxaActual);
                f.setNom(nom);
             }
         });
@@ -93,17 +118,17 @@ public class MainActivity extends AppCompatActivity {
         rgoSexe.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Fitxa f = Fitxa.getFitxes().get(indexFitxaActual);
+                Fitxa f = Fitxa.getFitxes(MainActivity.this).get(indexFitxaActual);
                 f.setEsHome(  checkedId == R.id.rdoHome );
             }
         });
         //----------------------------------------------------
-        Fitxa f = Fitxa.getFitxes().get(indexFitxaActual);
+        Fitxa f = Fitxa.getFitxes(this).get(indexFitxaActual);
         dtpData.init(f.getData().getYear(), f.getData().getMonth()-1, f.getData().getDay(),
                 new DatePicker.OnDateChangedListener() {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Fitxa f = Fitxa.getFitxes().get(indexFitxaActual);
+                        Fitxa f = Fitxa.getFitxes(MainActivity.this).get(indexFitxaActual);
                         f.setData( new Date(year, monthOfYear+1, dayOfMonth ) );
                     }
                 }
@@ -124,9 +149,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void mostrarFitxaActual() {
         // Verifiquem abans que l'index de la fitxa no surti de mare.
-        if(indexFitxaActual>=0 && indexFitxaActual<Fitxa.getFitxes().size()) {
+        if(indexFitxaActual>=0 && indexFitxaActual<Fitxa.getFitxes(this).size()) {
 
-            fitxaActual = Fitxa.getFitxes().get(indexFitxaActual);
+            fitxaActual = Fitxa.getFitxes(this).get(indexFitxaActual);
 
             edtNom.setText(fitxaActual.getNom());
             if (fitxaActual.isEsHome()) {
@@ -134,7 +159,8 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 rgoSexe.check(R.id.rdoDona);
             }
-            imgFoto.setImageResource(fitxaActual.getRecursImatge());
+            imgFoto.setImageBitmap(fitxaActual.getImatge());
+            //imgFoto.setImageResource(fitxaActual.getRecursImatge());
 
             dtpData.updateDate(
                     fitxaActual.getData().getYear(),
@@ -143,4 +169,36 @@ public class MainActivity extends AppCompatActivity {
             );
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent data = new Intent();
+        fitxaActual = Fitxa.getFitxes(this).get(indexFitxaActual);
+        data.putExtra(MainActivity.PARAM_ID,fitxaActual.getId() );
+        setResult(Activity.RESULT_OK, data);
+        finish();
+    }
+
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imgFoto.setImageBitmap(imageBitmap);
+            fitxaActual = Fitxa.getFitxes(this).get(indexFitxaActual);
+            fitxaActual.setImatge(imageBitmap);
+        }
+    }
+
+
 }

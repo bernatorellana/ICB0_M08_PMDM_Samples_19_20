@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SpinnerAndRecycler</string>
+    <string name="spn_bons">Bons</string>
+    <string name="spn_dolents">Dolents</string>
+</resources>

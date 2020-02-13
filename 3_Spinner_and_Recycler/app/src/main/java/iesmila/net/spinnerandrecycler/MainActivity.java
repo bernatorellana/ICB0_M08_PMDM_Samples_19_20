@@ -2,6 +2,7 @@ package iesmila.net.spinnerandrecycler;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ArrayAdapter;
@@ -45,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         //---------------------------------------------------------------------
         // Preparació del RecyclerView
         rcyLlista.setHasFixedSize(true); // té alçada fixa....accelera el render de la llista
-        rcyLlista.setLayoutManager(new LinearLayoutManager(this));
+        //rcyLlista.setLayoutManager(new LinearLayoutManager(this));
+        rcyLlista.setLayoutManager(new GridLayoutManager(this, 2));
 
         AdaptadorPersonatges adapterR = new AdaptadorPersonatges(Personatge.getPersonatges());
         rcyLlista.setAdapter(adapterR);

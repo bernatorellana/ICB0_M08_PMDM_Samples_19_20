@@ -39,7 +39,7 @@ public class Personatge implements Serializable{
 	public void setIdRecursImatge(int idRecursImatge) {
 		this.idRecursImatge = idRecursImatge;
 	}
-	public boolean isEsMalo() {
+	public boolean esMalo() {
 		return esMalo;
 	}
 

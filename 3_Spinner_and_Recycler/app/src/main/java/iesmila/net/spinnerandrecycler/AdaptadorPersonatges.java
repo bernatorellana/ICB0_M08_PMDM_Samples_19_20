@@ -22,7 +22,9 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
     @Override
     public AdaptadorPersonatges.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fitxa, null, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(
+                viewType==TIPUS_BO ? R.layout.fitxa_bo: R.layout.fitxa_dolent,
+                null, false);
         return new MyViewHolder(v);
     }
 
@@ -39,6 +41,21 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
         return mPersonatges.size();
     }
 
+    /**
+     * Definim el tipus de cada fila
+     * @param position
+     * @return
+     */
+    @Override
+    public int getItemViewType(int position) {
+        Personatge p = mPersonatges.get(position);
+        return p.esMalo()?TIPUS_DOLENT:TIPUS_BO;
+    }
+
+    private static final int TIPUS_BO = 0;
+    private static final int TIPUS_DOLENT = 1;
+
+
     public class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView imv_photo;
         TextView txvId;
@@ -49,5 +66,7 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
             txvId = itemView.findViewById(R.id.txvId);
             txvNom = itemView.findViewById(R.id.txvNom);
         }
+
+
     }
 }

@@ -54,14 +54,14 @@ public class Personatge implements Serializable{
 	public static ArrayList<Personatge> getPersonatges(){
 		if(personatges==null) {
 			personatges = new ArrayList<Personatge> ();
-			personatges.add(new Personatge(0, "Blanca", R.drawable.blanca, true));
-			personatges.add(new Personatge(1, "Chun-li", R.drawable.chunli, true));
-			personatges.add(new Personatge(2, "Dalshim", R.drawable.dalshim, true));
+			personatges.add(new Personatge(0, "Blanca", R.drawable.blanca, false));
+			personatges.add(new Personatge(1, "Chun-li", R.drawable.chunli, false));
+			personatges.add(new Personatge(2, "Dalshim", R.drawable.dalshim, false));
 			personatges.add(new Personatge(3, "Ken", R.drawable.ken, true));
-			personatges.add(new Personatge(4, "Zangief", R.drawable.zangief, false));
-			personatges.add(new Personatge(5, "Zangief1", R.drawable.zangief, false));
-			personatges.add(new Personatge(6, "Zangief2", R.drawable.zangief, false));
-			personatges.add(new Personatge(7, "Zangief3", R.drawable.zangief, false));
+			personatges.add(new Personatge(4, "Zangief", R.drawable.zangief, true));
+			personatges.add(new Personatge(5, "Zangief1", R.drawable.zangief, true));
+			personatges.add(new Personatge(6, "Zangief2", R.drawable.zangief, true));
+			personatges.add(new Personatge(7, "Zangief3", R.drawable.zangief, true));
 		}
 		return personatges;
 	}

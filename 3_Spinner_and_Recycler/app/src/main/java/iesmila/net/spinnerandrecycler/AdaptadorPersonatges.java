@@ -12,6 +12,10 @@ import java.util.List;
 
 class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyViewHolder>{
 
+
+    public static final int NO_SELECCIONAT = -1;
+    private int posicioSeleccionada = NO_SELECCIONAT;
+
     private List<Personatge> mPersonatges;
 
     public AdaptadorPersonatges(List<Personatge> personatges){
@@ -25,6 +29,7 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
         View v = LayoutInflater.from(parent.getContext()).inflate(
                 viewType==TIPUS_BO ? R.layout.fitxa_bo_grid: R.layout.fitxa_dolent_grid,
                 null, false);
+        v.setSelected(true);
         return new MyViewHolder(v);
     }
 
@@ -35,6 +40,7 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
         holder.txvId.setText( ""+p.getId());
         holder.txvId2   .setText( ""+p.getId());
         holder.txvNom.setText(p.getNom());
+        holder.itemView.setSelected(position==posicioSeleccionada);
     }
 
     @Override
@@ -57,7 +63,7 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
     private static final int TIPUS_DOLENT = 1;
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imv_photo;
         TextView txvId;
         TextView txvId2;
@@ -69,8 +75,24 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
             txvId = itemView.findViewById(R.id.txvId);
             txvId2 = itemView.findViewById(R.id.txvId2);
             txvNom = itemView.findViewById(R.id.txvNom);
+
+            // programem el click sobre el conjunt de la fila
+            itemView.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View v) {
+            // si estic aquí és que algú ha clickat sobre una fila
+            int posicioFilaClick = getAdapterPosition();
+            int seleccionadaAnterior = posicioSeleccionada;
+            if( posicioSeleccionada!=posicioFilaClick) {
+                posicioSeleccionada=posicioFilaClick;
+                notifyItemChanged(posicioSeleccionada);
 
+            } else if( posicioSeleccionada==posicioFilaClick) {
+                posicioSeleccionada = NO_SELECCIONAT;
+            }
+            notifyItemChanged(seleccionadaAnterior);
+        }
     }
 }

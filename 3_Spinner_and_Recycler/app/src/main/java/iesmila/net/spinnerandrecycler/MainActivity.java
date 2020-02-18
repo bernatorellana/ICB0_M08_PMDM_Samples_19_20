@@ -21,12 +21,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MainActivity extends AppCompatActivity implements TextWatcher, AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements TextWatcher, AdapterView.OnItemSelectedListener, AdaptadorPersonatges.SelectionChangedListener {
 
     private EditText edtFiltre;
     private Spinner spnMalo;
     private RecyclerView rcyLlista;
     private Toolbar toolbar;
+    private AdaptadorPersonatges adapterR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +68,15 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Adap
         //rcyLlista.setLayoutManager(new LinearLayoutManager(this));
         rcyLlista.setLayoutManager(new GridLayoutManager(this, 2));
 
-        AdaptadorPersonatges adapterR = new AdaptadorPersonatges(Personatge.getPersonatges());
-        rcyLlista.setAdapter(adapterR);
-
+        //adapterR = new AdaptadorPersonatges(Personatge.getPersonatges());
+        //rcyLlista.setAdapter(adapterR);
+        filtra();
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+            getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -85,13 +86,13 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Adap
 
         switch (id) {
             case R.id.itmEsborrar:
-                /// fer esborrat
+                adapterR.esborrarFilaSeleccionada();
                 return true;
             case R.id.itmUp:
-                /// fer amunt
+                adapterR.moure(-1);
                 return true;
             case R.id.itmDown:
-                /// fer amunt
+                adapterR.moure(+1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Adap
                 }
             }
         }
-        AdaptadorPersonatges adapterR = new AdaptadorPersonatges(filtrada);
+        adapterR = new AdaptadorPersonatges(filtrada, this);
         rcyLlista.setAdapter(adapterR);
     }
 
@@ -150,6 +151,11 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Adap
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         filtra();
+    }
+
+    @Override
+    public void onSelectionChanged(int selectedPosition, Personatge p) {
+
     }
 }
 

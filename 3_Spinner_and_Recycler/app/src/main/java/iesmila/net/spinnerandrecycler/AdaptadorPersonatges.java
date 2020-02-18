@@ -2,6 +2,7 @@ package iesmila.net.spinnerandrecycler;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,26 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
 
 
     public static final int NO_SELECCIONAT = -1;
-    private int posicioSeleccionada = NO_SELECCIONAT;
+
+    public int getPosicioSeleccionada() {
+        return posicioSeleccionada;
+    }
+
+    private int posicioSeleccionada;
 
     private List<Personatge> mPersonatges;
 
-    public AdaptadorPersonatges(List<Personatge> personatges){
+    private SelectionChangedListener mListener;
+
+    public interface SelectionChangedListener {
+        void onSelectionChanged(int selectedPosition, Personatge p);
+    }
+
+
+    public AdaptadorPersonatges(List<Personatge> personatges, SelectionChangedListener listener){
         mPersonatges = personatges;
+        posicioSeleccionada = NO_SELECCIONAT;
+        this.mListener = listener;
     }
 
     @NonNull
@@ -62,6 +77,34 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
     private static final int TIPUS_BO = 0;
     private static final int TIPUS_DOLENT = 1;
 
+    public void esborrarFilaSeleccionada() {
+
+        if(this.posicioSeleccionada!=NO_SELECCIONAT) {
+
+            Personatge  p = mPersonatges.remove(posicioSeleccionada);
+
+            Personatge.getPersonatges().remove(p);
+
+            notifyItemRemoved(posicioSeleccionada);
+            this.posicioSeleccionada = NO_SELECCIONAT;
+        }
+    }
+
+    public void moure(int i) {
+
+        if(this.posicioSeleccionada!=NO_SELECCIONAT) {
+
+            if(posicioSeleccionada+i<0 || posicioSeleccionada+i>= mPersonatges.size()) return;
+
+
+            Personatge p = mPersonatges.remove(posicioSeleccionada);
+            mPersonatges.add(posicioSeleccionada+i, p);
+            notifyItemMoved(posicioSeleccionada, posicioSeleccionada+i);
+            posicioSeleccionada += i;
+        }
+
+    }
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imv_photo;
@@ -90,9 +133,18 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
                 notifyItemChanged(posicioSeleccionada);
 
             } else if( posicioSeleccionada==posicioFilaClick) {
-                posicioSeleccionada = NO_SELECCIONAT;
+              posicioSeleccionada = NO_SELECCIONAT;
             }
             notifyItemChanged(seleccionadaAnterior);
+
+            // Avisem a listener que la selecció ha canviat
+            if(mListener!=null) {
+                if(posicioSeleccionada==NO_SELECCIONAT) {
+                    mListener.onSelectionChanged(NO_SELECCIONAT,null);
+                } else {
+                    mListener.onSelectionChanged(posicioSeleccionada, mPersonatges.get(posicioSeleccionada));
+                }
+            }
         }
     }
 }

@@ -73,10 +73,13 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Adap
         filtra();
 
     }
+    private Menu mMenu;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-            getMenuInflater().inflate(R.menu.main_menu, menu);
+        mMenu = menu;
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        updateMenu();
         return true;
     }
 
@@ -155,7 +158,14 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Adap
 
     @Override
     public void onSelectionChanged(int selectedPosition, Personatge p) {
+        updateMenu();
+    }
 
+    private void updateMenu() {
+        int p = adapterR.getPosicioSeleccionada();
+        mMenu.findItem(R.id.itmEsborrar).setVisible(p!=-1 );
+        mMenu.findItem(R.id.itmDown).setVisible( p>=0 &&p<adapterR.getItemCount()-1);
+        mMenu.findItem(R.id.itmUp).setVisible( p>=1 );
     }
 }
 

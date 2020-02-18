@@ -87,6 +87,7 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
 
             notifyItemRemoved(posicioSeleccionada);
             this.posicioSeleccionada = NO_SELECCIONAT;
+            fireSelectionChanged();
         }
     }
 
@@ -101,6 +102,7 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
             mPersonatges.add(posicioSeleccionada+i, p);
             notifyItemMoved(posicioSeleccionada, posicioSeleccionada+i);
             posicioSeleccionada += i;
+            fireSelectionChanged();
         }
 
     }
@@ -136,14 +138,17 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
               posicioSeleccionada = NO_SELECCIONAT;
             }
             notifyItemChanged(seleccionadaAnterior);
+            fireSelectionChanged();
+        }
+    }
 
-            // Avisem a listener que la selecció ha canviat
-            if(mListener!=null) {
-                if(posicioSeleccionada==NO_SELECCIONAT) {
-                    mListener.onSelectionChanged(NO_SELECCIONAT,null);
-                } else {
-                    mListener.onSelectionChanged(posicioSeleccionada, mPersonatges.get(posicioSeleccionada));
-                }
+    private void fireSelectionChanged() {
+        // Avisem a listener que la selecció ha canviat
+        if(mListener!=null) {
+            if(posicioSeleccionada==NO_SELECCIONAT) {
+                mListener.onSelectionChanged(NO_SELECCIONAT,null);
+            } else {
+                mListener.onSelectionChanged(posicioSeleccionada, mPersonatges.get(posicioSeleccionada));
             }
         }
     }

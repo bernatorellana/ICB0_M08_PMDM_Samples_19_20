@@ -16,6 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +36,10 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Adap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        inicialitzaUniversalImageLoader();
+
         setContentView(R.layout.activity_main);
 
         //-----------------------------
@@ -73,6 +81,21 @@ public class MainActivity extends AppCompatActivity implements TextWatcher, Adap
         filtra();
 
     }
+
+    private void inicialitzaUniversalImageLoader() {
+
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder().
+                showImageOnLoading(R.drawable.loading).build();
+
+
+        // Create global configuration and initialize ImageLoader with this config
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).
+                defaultDisplayImageOptions(options).
+                build();
+        ImageLoader.getInstance().init(config);
+    }
+
     private Menu mMenu;
 
     @Override

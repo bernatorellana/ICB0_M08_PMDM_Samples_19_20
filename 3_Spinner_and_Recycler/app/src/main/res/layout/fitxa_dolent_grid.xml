@@ -21,7 +21,7 @@
             android:orientation="vertical"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="300dp">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 <ImageView
                     android:id="@+id/imv_photo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:scaleType="center"
                     android:src="@drawable/dalshim"
                     app:layout_constraintStart_toStartOf="parent"

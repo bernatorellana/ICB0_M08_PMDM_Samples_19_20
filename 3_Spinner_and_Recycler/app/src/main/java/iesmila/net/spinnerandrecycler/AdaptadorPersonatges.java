@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.List;
 
 class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyViewHolder>{
@@ -26,6 +28,8 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
 
     private SelectionChangedListener mListener;
 
+    private ImageLoader imageLoader;
+
     public interface SelectionChangedListener {
         void onSelectionChanged(int selectedPosition, Personatge p);
     }
@@ -35,6 +39,9 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
         mPersonatges = personatges;
         posicioSeleccionada = NO_SELECCIONAT;
         this.mListener = listener;
+
+        //---------------------------------------------
+        imageLoader = ImageLoader.getInstance();
     }
 
     @NonNull
@@ -51,7 +58,10 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
     @Override
     public void onBindViewHolder(@NonNull AdaptadorPersonatges.MyViewHolder holder, int position) {
         Personatge p = mPersonatges.get(position);
-        holder.imv_photo.setImageResource( p.getIdRecursImatge());
+        //holder.imv_photo.setImageResource( p.getIdRecursImatge());
+
+        imageLoader.displayImage(p.getImatgeUrl(), holder.imv_photo);
+
         holder.txvId.setText( ""+p.getId());
         holder.txvId2   .setText( ""+p.getId());
         holder.txvNom.setText(p.getNom());

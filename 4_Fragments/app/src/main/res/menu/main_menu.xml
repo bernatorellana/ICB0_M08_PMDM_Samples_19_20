@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <item
+        android:id="@+id/itmEsborrar"
+        android:title="Esborrar" android:icon="@android:drawable/ic_delete"
+        app:showAsAction="ifRoom"></item>
+    <item
+        android:id="@+id/itmUp"
+        android:title="Up" android:icon="@android:drawable/arrow_up_float"
+        app:showAsAction="ifRoom"></item>
+    <item
+        android:id="@+id/itmDown"
+        android:title="Down" android:icon="@android:drawable/arrow_down_float"
+        app:showAsAction="ifRoom"></item>
+</menu>

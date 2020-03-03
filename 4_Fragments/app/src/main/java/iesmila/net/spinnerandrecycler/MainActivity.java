@@ -1,0 +1,65 @@
+package iesmila.net.spinnerandrecycler;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class MainActivity extends AppCompatActivity
+    implements LlistaFragment.ILlistaFragment_PersonatgeSelectedListener
+{
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        inicialitzaUniversalImageLoader();
+
+        setContentView(R.layout.activity_main);
+
+    }
+
+    private void inicialitzaUniversalImageLoader() {
+
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder().
+                showImageOnLoading(R.drawable.loading).build();
+
+
+        // Create global configuration and initialize ImageLoader with this config
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).
+                defaultDisplayImageOptions(options).
+                build();
+        ImageLoader.getInstance().init(config);
+    }
+
+    @Override
+    public void onPersonatgeSelected(Personatge p) {
+
+    }
+}
+
+
+

@@ -10,12 +10,12 @@
 
     <fragment android:id="@+id/fgrLlista" class="iesmila.net.spinnerandrecycler.LlistaFragment"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight="10"
         android:layout_height="match_parent"/>
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/llyDetall"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight="10"
         android:layout_height="match_parent"></LinearLayout>
 </LinearLayout>

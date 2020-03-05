@@ -230,6 +230,8 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
     @Override
     public void onSelectionChanged(int selectedPosition, Personatge p) {
         updateMenu();
+
+       mListener.onPersonatgeSelected(p);
     }
 
     private void updateMenu() {

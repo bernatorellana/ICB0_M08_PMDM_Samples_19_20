@@ -76,7 +76,7 @@ public class DetallFragment extends Fragment {
         edtURL = v.findViewById(R.id.edtURL);
         imvPhoto = v.findViewById(R.id.imvPhoto);
         //--------------------------------------
-        edtId.setText(p.getId());
+        edtId.setText(""+p.getId());
         edtNom.setText(p.getNom());
         edtURL.setText(p.getImatgeUrl());
         ImageLoader.getInstance().displayImage(p.getImatgeUrl(), imvPhoto);

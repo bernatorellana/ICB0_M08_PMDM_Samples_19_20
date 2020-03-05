@@ -1,5 +1,6 @@
 package iesmila.net.spinnerandrecycler;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,10 +27,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity
-    implements LlistaFragment.ILlistaFragment_PersonatgeSelectedListener
+    implements LlistaFragment.ILlistaFragment_PersonatgeSelectedListener,
+        DetallFragment.PersonatgeChangedEventListener
 {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,30 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onPersonatgeSelected(Personatge p) {
+
+        // Creació dinàmica del fragment
+        if(findViewById(R.id.llyDetall)!=null) {
+            // Estic en horitzontal
+            // posem el fragment de detall al contenidor
+
+            DetallFragment fragmentDetall = DetallFragment.newInstance(p);
+
+            FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+            t.replace(R.id.llyDetall, fragmentDetall);
+            t.commit();
+
+        } else {
+            //llanço una nova activity que durà a dins el fragment de detall
+        }
+    }
+
+    @Override
+    public void onDeleted(Personatge p) {
+
+    }
+
+    @Override
+    public void onSaved(Personatge p) {
 
     }
 }

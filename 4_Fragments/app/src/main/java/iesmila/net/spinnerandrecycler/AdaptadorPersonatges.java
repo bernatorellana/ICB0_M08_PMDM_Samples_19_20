@@ -30,6 +30,7 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
 
     private ImageLoader imageLoader;
 
+
     public interface SelectionChangedListener {
         void onSelectionChanged(int selectedPosition, Personatge p);
     }

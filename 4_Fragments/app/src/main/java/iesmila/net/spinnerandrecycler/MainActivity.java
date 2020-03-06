@@ -57,31 +57,39 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onPersonatgeSelected(Personatge p) {
+        if(p!=null) {
+            // Creació dinàmica del fragment
+            if (findViewById(R.id.llyDetall) != null) {
+                // Estic en horitzontal
+                // posem el fragment de detall al contenidor
 
-        // Creació dinàmica del fragment
-        if(findViewById(R.id.llyDetall)!=null) {
-            // Estic en horitzontal
-            // posem el fragment de detall al contenidor
+                DetallFragment fragmentDetall = DetallFragment.newInstance(p);
 
-            DetallFragment fragmentDetall = DetallFragment.newInstance(p);
+                FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+                t.replace(R.id.llyDetall, fragmentDetall);
+                t.commit();
 
-            FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-            t.replace(R.id.llyDetall, fragmentDetall);
-            t.commit();
-
+            } else {
+                //llanço una nova activity que durà a dins el fragment de detall
+            }
         } else {
-            //llanço una nova activity que durà a dins el fragment de detall
+            //p == null
         }
+
     }
 
     @Override
     public void onDeleted(Personatge p) {
-
+        LlistaFragment lf = (LlistaFragment)
+                getSupportFragmentManager().findFragmentById(R.id.fgrLlista);
+        lf.onDeleted(p);
     }
 
     @Override
     public void onSaved(Personatge p) {
-
+        LlistaFragment lf = (LlistaFragment)
+                getSupportFragmentManager().findFragmentById(R.id.fgrLlista);
+        lf.onSaved(p);
     }
 }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -33,10 +34,14 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
     private Toolbar toolbar;
     private AdaptadorPersonatges adapterR;
     private ILlistaFragment_PersonatgeSelectedListener mListener;
+    private List<Personatge> filtrada;
     //--------
+
+
 
     public LlistaFragment() {
         // Required empty public constructor
+
     }
 
     /**
@@ -52,6 +57,7 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
     }
@@ -60,8 +66,9 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_llista, container, false);
-
+        View v = inflater.inflate(R.layout.fragment_llista, container, false);
+        setHasOptionsMenu(true);
+        return v;
     }
 
     @Override
@@ -74,7 +81,8 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
         rcyLlista = getView().findViewById(R.id.rcyLlista);
         toolbar = getView().findViewById(R.id.toolbar);
         // fer això per què si
-        //setSupportActionBar(toolbar);
+
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         //-----------------------------
         // Programem el text changed del filtre
         edtFiltre.addTextChangedListener(this);
@@ -149,6 +157,7 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu,inflater);
         mMenu = menu;
         inflater.inflate(R.menu.main_menu, menu);
         updateMenu();
@@ -194,7 +203,7 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
 
     private void filtra() {
         List<Personatge> personatges = Personatge.getPersonatges();
-        List<Personatge> filtrada = new ArrayList<Personatge>();
+        filtrada = new ArrayList<Personatge>();
         boolean filtraPerTipus = false;
         boolean bonsSelected = false;
         if(spnMalo.getSelectedItemPosition()==1) {
@@ -231,14 +240,32 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
     public void onSelectionChanged(int selectedPosition, Personatge p) {
         updateMenu();
 
+
        mListener.onPersonatgeSelected(p);
     }
 
     private void updateMenu() {
         int p = adapterR.getPosicioSeleccionada();
-        //mMenu.findItem(R.id.itmEsborrar).setVisible(p!=-1 );
-        //mMenu.findItem(R.id.itmDown).setVisible( p>=0 &&p<adapterR.getItemCount()-1);
-        //mMenu.findItem(R.id.itmUp).setVisible( p>=1 );
+        mMenu.findItem(R.id.itmEsborrar).setVisible(p!=-1 );
+        mMenu.findItem(R.id.itmDown).setVisible( p>=0 &&p<adapterR.getItemCount()-1);
+        mMenu.findItem(R.id.itmUp).setVisible( p>=1 );
     }
+
+    public void onDeleted(Personatge p) {
+        int index = filtrada.indexOf(p);
+        if(index!=-1) {
+            filtrada.remove(index);
+            adapterR.notifyItemRemoved(index);
+        }
+        onSelectionChanged(-1, null);//notificar que no hi ha res seleccionat
+    }
+
+    public void onSaved(Personatge p) {
+        int index = filtrada.indexOf(p);
+        if(index!=-1) {
+            adapterR.notifyItemChanged(index);
+        }
+    }
+
 
 }

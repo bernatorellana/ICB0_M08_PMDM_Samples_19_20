@@ -11,6 +11,11 @@ public class Personatge implements Serializable{
 	private static final long serialVersionUID = -1486530091436589402L;
 	private String nom;
 	private int id, idRecursImatge;
+
+	public void setUrlImatge(String urlImatge) {
+		this.urlImatge = urlImatge;
+	}
+
 	private String urlImatge;
 
 	private boolean esMalo=false;

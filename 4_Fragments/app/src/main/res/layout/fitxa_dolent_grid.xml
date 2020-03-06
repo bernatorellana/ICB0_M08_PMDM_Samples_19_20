@@ -8,32 +8,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@drawable/border"
+
     >
     <android.support.v7.widget.CardView
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="4dp"
         card_view:contentPadding="0dp"
-        card_view:cardBackgroundColor="@color/colorPrimary"
         android:layout_margin="5dp"
+        card_view:cardBackgroundColor="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="300dp"
+        >
         <LinearLayout
             android:orientation="vertical"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="300dp">
+            android:layout_height="match_parent"
+            >
+
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
                 <ImageView
                     android:id="@+id/imv_photo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="center"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/dalshim"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"></ImageView>
 
                 <TextView
@@ -69,8 +75,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/white"
                 android:textSize="25sp"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:text="Dalshim"  />
         </LinearLayout>

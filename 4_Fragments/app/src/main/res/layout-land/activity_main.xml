@@ -8,7 +8,8 @@
     tools:context=".MainActivity"
     android:orientation="horizontal">
 
-    <fragment android:id="@+id/fgrLlista" class="iesmila.net.spinnerandrecycler.LlistaFragment"
+    <fragment android:id="@+id/fgrLlista"
+        class="iesmila.net.spinnerandrecycler.LlistaFragment"
         android:layout_width="0dp"
         android:layout_weight="10"
         android:layout_height="match_parent"/>

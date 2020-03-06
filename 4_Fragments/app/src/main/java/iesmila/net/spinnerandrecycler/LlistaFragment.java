@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,8 +59,11 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
+        // Li atorguem la INMORTALITAT
+        // WOW!
+        setRetainInstance(true);
+        //* * * * * * * * * * * * * * * *
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -74,6 +78,7 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
     @Override
     public void onStart() {
         super.onStart();
+        Log.d("FRAG", "onStart >"+adapterR);
 
         //-----------------------------
         edtFiltre = getView().findViewById(R.id.edtFiltre);
@@ -104,16 +109,16 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
 
         spnMalo.setAdapter(adapter);
 
+
+        //adapterR = new AdaptadorPersonatges(Personatge.getPersonatges());
+        //rcyLlista.setAdapter(adapterR);
         //---------------------------------------------------------------------
         // Preparació del RecyclerView
         rcyLlista.setHasFixedSize(true); // té alçada fixa....accelera el render de la llista
         //rcyLlista.setLayoutManager(new LinearLayoutManager(this));
         rcyLlista.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        //adapterR = new AdaptadorPersonatges(Personatge.getPersonatges());
-        //rcyLlista.setAdapter(adapterR);
         filtra();
-
 
 
     }
@@ -197,7 +202,7 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
 
     @Override
     public void afterTextChanged(Editable s) {
-
+        Log.d("FRAG", "afterTextChanged");
         filtra();
     }
 
@@ -222,17 +227,24 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
                 }
             }
         }
-        adapterR = new AdaptadorPersonatges(filtrada, this);
+        int posicioSeleccionadaAnteriorment = -1;
+        if(adapterR!=null) {
+            posicioSeleccionadaAnteriorment = adapterR.getPosicioSeleccionada();
+        }
+
+        adapterR = new AdaptadorPersonatges(filtrada, posicioSeleccionadaAnteriorment,  this);
         rcyLlista.setAdapter(adapterR);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("FRAG", "onItemSelected");
         filtra();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+        Log.d("FRAG", "onNothingSelected");
         filtra();
     }
 
@@ -254,8 +266,7 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
     public void onDeleted(Personatge p) {
         int index = filtrada.indexOf(p);
         if(index!=-1) {
-            filtrada.remove(index);
-            adapterR.notifyItemRemoved(index);
+            adapterR.esborrarFilaSeleccionada();
         }
         onSelectionChanged(-1, null);//notificar que no hi ha res seleccionat
     }
@@ -267,5 +278,8 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
         }
     }
 
+    public int getPosicioSeleccionada() {
+        return adapterR.getPosicioSeleccionada();
+    }
 
 }

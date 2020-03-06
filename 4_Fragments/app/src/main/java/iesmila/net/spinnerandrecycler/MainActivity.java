@@ -1,5 +1,6 @@
 package iesmila.net.spinnerandrecycler;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -72,8 +73,13 @@ public class MainActivity extends AppCompatActivity
             } else {
                 //llanço una nova activity que durà a dins el fragment de detall
             }
-        } else {
-            //p == null
+        } else {// p val null
+
+            // Si no hi ha cap personatge seleccionat, eliminem el fragment
+            FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.llyDetall);
+            t.remove(f);
+            t.commit();
         }
 
     }

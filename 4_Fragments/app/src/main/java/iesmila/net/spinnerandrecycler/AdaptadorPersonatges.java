@@ -36,10 +36,16 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
     }
 
 
-    public AdaptadorPersonatges(List<Personatge> personatges, SelectionChangedListener listener){
+    public AdaptadorPersonatges(List<Personatge> personatges, int posicioSeleccionadaAnteriorment, SelectionChangedListener listener){
         mPersonatges = personatges;
-        posicioSeleccionada = NO_SELECCIONAT;
+
+        if(posicioSeleccionadaAnteriorment>=personatges.size()) {
+            posicioSeleccionada = -1;
+        } else {
+            posicioSeleccionada = posicioSeleccionadaAnteriorment;//NO_SELECCIONAT;
+        }
         this.mListener = listener;
+        Log.d("FRAG",">AdaptadorPersonatges:"+ posicioSeleccionada);
 
         //---------------------------------------------
         imageLoader = ImageLoader.getInstance();

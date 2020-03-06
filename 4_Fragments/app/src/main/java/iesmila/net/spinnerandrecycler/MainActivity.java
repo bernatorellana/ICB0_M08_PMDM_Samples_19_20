@@ -40,6 +40,18 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
+
+
+        // 1.- Afagar el fragment
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fgrLlista);
+        // 2.- Preguntar quin és l'item seleccionat (si n'hi ha algun)
+        if(f!=null && f instanceof  LlistaFragment) {
+            Personatge p = ((LlistaFragment)f).getPersonatgeSeleccionat();
+            // 3.- Mostrar el personatge carregant el fragment de detall (onPersonatgeSelected(Personatge p))
+            onPersonatgeSelected(p);
+        }
+
+
     }
 
     private void inicialitzaUniversalImageLoader() {
@@ -72,14 +84,17 @@ public class MainActivity extends AppCompatActivity
 
             } else {
                 //llanço una nova activity que durà a dins el fragment de detall
+                
             }
         } else {// p val null
 
             // Si no hi ha cap personatge seleccionat, eliminem el fragment
-            FragmentTransaction t = getSupportFragmentManager().beginTransaction();
             Fragment f = getSupportFragmentManager().findFragmentById(R.id.llyDetall);
-            t.remove(f);
-            t.commit();
+            if(f!= null) {
+                FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+                t.remove(f);
+                t.commit();
+            }
         }
 
     }

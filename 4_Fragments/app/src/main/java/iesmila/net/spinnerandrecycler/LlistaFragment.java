@@ -281,5 +281,9 @@ public class LlistaFragment extends Fragment implements TextWatcher, AdapterView
     public int getPosicioSeleccionada() {
         return adapterR.getPosicioSeleccionada();
     }
-
+    public Personatge getPersonatgeSeleccionat() {
+        if(filtrada==null) return null;
+        if(adapterR.getPosicioSeleccionada()==-1) return null;
+        return filtrada.get(adapterR.getPosicioSeleccionada());
+    }
 }

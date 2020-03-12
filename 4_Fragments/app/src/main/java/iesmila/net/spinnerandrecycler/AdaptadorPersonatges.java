@@ -67,8 +67,10 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
         Personatge p = mPersonatges.get(position);
         //holder.imv_photo.setImageResource( p.getIdRecursImatge());
 
-        imageLoader.displayImage(p.getImatgeUrl(), holder.imv_photo);
-
+        if(holder.url==null || ! holder.url.equals(p.getImatgeUrl())) {
+            imageLoader.displayImage(p.getImatgeUrl(), holder.imv_photo);
+        }
+        holder.url = p.getImatgeUrl();
         holder.txvId.setText( ""+p.getId());
         holder.txvId2   .setText( ""+p.getId());
         holder.txvNom.setText(p.getNom());
@@ -130,6 +132,7 @@ class AdaptadorPersonatges extends RecyclerView.Adapter<AdaptadorPersonatges.MyV
         TextView txvId;
         TextView txvId2;
         TextView txvNom;
+        String url;
 
         public MyViewHolder(View itemView) {
             super(itemView);

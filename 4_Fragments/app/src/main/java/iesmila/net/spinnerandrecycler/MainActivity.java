@@ -1,5 +1,7 @@
 package iesmila.net.spinnerandrecycler;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -64,8 +67,53 @@ public class MainActivity extends AppCompatActivity
         // Create global configuration and initialize ImageLoader with this config
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).
                 defaultDisplayImageOptions(options).
+                memoryCache(new LruMemoryCache(20 * 1024 * 1024)).
+                memoryCacheSize(20 * 1024 * 1024).
                 build();
         ImageLoader.getInstance().init(config);
+
+
+        saveIntoPreferences();
+
+
+        /*
+        File cacheDir = StorageUtils.getCacheDirectory(context);
+ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+		.memoryCacheExtraOptions(480, 800) // default = device screen dimensions
+		.diskCacheExtraOptions(480, 800, null)
+		.taskExecutor(...)
+		.taskExecutorForCachedImages(...)
+		.threadPoolSize(3) // default
+		.threadPriority(Thread.NORM_PRIORITY - 2) // default
+		.tasksProcessingOrder(QueueProcessingType.FIFO) // default
+		.denyCacheImageMultipleSizesInMemory()
+		.memoryCache(new LruMemoryCache(2 * 1024 * 1024))
+		.memoryCacheSize(2 * 1024 * 1024)
+		.memoryCacheSizePercentage(13) // default
+		.diskCache(new UnlimitedDiskCache(cacheDir)) // default
+		.diskCacheSize(50 * 1024 * 1024)
+		.diskCacheFileCount(100)
+		.diskCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
+		.imageDownloader(new BaseImageDownloader(context)) // default
+		.imageDecoder(new BaseImageDecoder()) // default
+		.defaultDisplayImageOptions(DisplayImageOptions.createSimple()) // default
+		.writeDebugLogs()
+		.build();
+
+        */
+
+    }
+
+    private void saveIntoPreferences() {
+
+       SharedPreferences sp =
+               getSharedPreferences("APP_FRAGMENTS", Context.MODE_PRIVATE);
+        String nom = sp.getString("Nom", null);
+
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("Nom", "Paco");
+        editor.
+
     }
 
     @Override
@@ -84,7 +132,7 @@ public class MainActivity extends AppCompatActivity
 
             } else {
                 //llanço una nova activity que durà a dins el fragment de detall
-                
+
             }
         } else {// p val null
 

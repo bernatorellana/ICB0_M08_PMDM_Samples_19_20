@@ -1,6 +1,8 @@
 package com.example.usuari.demoanimacio;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.drm.DrmStore;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
@@ -8,12 +10,15 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView iv;
     private ConstraintLayout clyScreen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //-------------------------
 
         // Animació directa
-        iv.animate().setDuration(1000).rotationBy(90).alpha(0.5f).setListener(new Animator.AnimatorListener() {
+        /*iv.animate().setDuration(1000).rotationBy(90).alpha(0.5f).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) { }
             @Override
@@ -43,10 +48,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
 
+        });*/
+        //----------------------------------------
+        // Les propietats dels objectes
+        /*
+        iv.setAlpha(0.5f);
+        iv.setX(200f);
+        iv.setRotation(45);
+        */
+
+        //--------------------------------------------------
+        // Animació usant ObjectAnimator
+        clyScreen.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout()  {
+                clyScreen.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                ferAnimacio();
+            }
         });
 
-
     }
+
+    private void ferAnimacio() {
+
+        int w = clyScreen.getWidth();
+        int h = clyScreen.getHeight();
+        View llyTerra = findViewById(R.id.llyTerra);
+        h-= llyTerra.getHeight();
+
+
+
+        ObjectAnimator a10 = ObjectAnimator.ofFloat(iv, "X", w-iv.getWidth() - (iv.getHeight()-iv.getWidth())/2);
+        ObjectAnimator a11 = ObjectAnimator.ofFloat(iv, "ScaleX", 1, 2, 1);
+        ObjectAnimator a12 = ObjectAnimator.ofFloat(iv, "ScaleY", 1, 2, 1);
+        ObjectAnimator a13 = ObjectAnimator.ofFloat(iv, "Y",  h-iv.getHeight() , h-iv.getHeight()*1.5f , h-iv.getHeight());
+        ObjectAnimator a2 = ObjectAnimator.ofFloat(iv, "Rotation", -90);
+        ObjectAnimator a3 = ObjectAnimator.ofFloat(iv, "Y", 0);
+        ObjectAnimator a4 = ObjectAnimator.ofFloat(iv, "Rotation", -180);
+        ObjectAnimator a5 = ObjectAnimator.ofFloat(iv, "X", (iv.getHeight()-iv.getWidth())/2);
+        ObjectAnimator a6 = ObjectAnimator.ofFloat(iv, "Rotation", -270);
+        ObjectAnimator a7 = ObjectAnimator.ofFloat(iv, "Y", h-iv.getHeight());
+        ObjectAnimator a8 = ObjectAnimator.ofFloat(iv, "Rotation", -360);
+
+        AnimatorSet as1 = new AnimatorSet();
+        as1.playTogether(a10, a11,a12, a13);
+        as1.setDuration(3000);
+        AnimatorSet as = new AnimatorSet();
+        as.playSequentially(as1,a2, a3, a4, a5, a6, a7, a8);
+        as.setDuration(1000);
+        as.start();
+    }
+
+
+
+
+
+
+
 
     @Override
     public void onClick(View v) {

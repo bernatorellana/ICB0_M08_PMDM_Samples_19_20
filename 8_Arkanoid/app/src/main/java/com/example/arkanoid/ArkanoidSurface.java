@@ -70,15 +70,17 @@ public class ArkanoidSurface extends SurfaceView implements SurfaceHolder.Callba
 
     private void dibuixaJoc(Canvas c) {
         c.drawColor(Color.BLACK);
+        //-------------------------
     }
-
 
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {    }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {    }
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        thread.stopMe();
+    }
 
     private class FilUpdate extends Thread {
 
